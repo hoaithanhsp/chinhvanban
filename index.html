@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VietCorrect - Chuẩn hóa văn bản</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+
+  <!-- Polyfill for process (required by some node-based libraries running in browser) -->
+  <script>
+    window.process = {
+      env: { NODE_ENV: 'production' }
+    };
+  </script>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              200: '#99f6e4',
+              300: '#5eead4',
+              400: '#2dd4bf',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
+              950: '#042f2e',
+            },
+            teal: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              200: '#99f6e4',
+              300: '#5eead4',
+              400: '#2dd4bf',
+              500: '#14b8a6',
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
+              950: '#042f2e',
+            },
+            slate: {
+              850: '#0f2826', // Custom dark teal bg
+            },
+            "background-light": "#f0fdfa",
+            "background-dark": "#042f2e",
+          },
+          fontFamily: {
+            "display": ["Inter", "sans-serif"],
+            "sans": ["Inter", "sans-serif"]
+          },
+          boxShadow: {
+            'soft': '0 10px 40px -10px rgba(0,0,0,0.05)',
+            'glow': '0 0 20px rgba(20, 184, 166, 0.4)',
+            'card': '0 0 0 1px rgba(13, 148, 136, 0.05), 0 2px 8px rgba(13, 148, 136, 0.05)',
+            'card-hover': '0 0 0 1px rgba(13, 148, 136, 0.1), 0 8px 24px rgba(13, 148, 136, 0.15)',
+          }
+        },
+      },
+    }
+  </script>
+
+  <style>
+    textarea::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    textarea::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    textarea::-webkit-scrollbar-thumb {
+      background-color: rgba(13, 148, 136, 0.2);
+      border-radius: 20px;
+      border: 3px solid transparent;
+      background-clip: content-box;
+    }
+
+    textarea::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(13, 148, 136, 0.4);
+    }
+
+    .dark textarea::-webkit-scrollbar-thumb {
+      background-color: rgba(94, 234, 212, 0.2);
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .dark .glass-panel {
+      background: rgba(4, 47, 46, 0.85);
+    }
+  </style>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "react/": "https://esm.sh/react@18.3.1/",
+        "react": "https://esm.sh/react@18.3.1",
+        "react-dom/": "https://esm.sh/react-dom@18.3.1/",
+        "react-dom": "https://esm.sh/react-dom@18.3.1",
+        "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+        "lucide-react": "https://esm.sh/lucide-react@0.400.0",
+        "jszip": "https://esm.sh/jszip@3.10.1",
+        "file-saver": "https://esm.sh/file-saver@2.0.5",
+        "pdfjs-dist": "https://esm.sh/pdfjs-dist@3.11.174",
+        "@google/genai": "https://esm.sh/@google/genai@0.1.2"
+      }
+    }
+    </script>
+
+</head>
+
+<body
+  class="font-display bg-teal-50 dark:bg-primary-950 text-teal-900 dark:text-teal-50 min-h-screen flex flex-col overflow-x-hidden transition-colors duration-300 selection:bg-primary-200 selection:text-primary-900 dark:selection:bg-primary-800 dark:selection:text-primary-100">
+  <div id="root"></div>
+  <script type="module" src="./index.tsx"></script>
+
+</body>
+
+</html>
