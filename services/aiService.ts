@@ -1,21 +1,21 @@
 import { GoogleGenAI } from "@google/genai";
 
 export const MODELS = [
-  { 
-    id: 'gemini-3-flash-preview', 
-    name: 'Gemini 3.0 Flash', 
+  {
+    id: 'gemini-3-flash-preview',
+    name: 'Gemini 3.0 Flash',
     desc: 'Tốc độ cao, độ trễ thấp (Khuyên dùng)',
     priority: 1
   },
-  { 
-    id: 'gemini-3-pro-preview', 
-    name: 'Gemini 3.0 Pro', 
+  {
+    id: 'gemini-3-pro-preview',
+    name: 'Gemini 3.0 Pro',
     desc: 'Xử lý tác vụ phức tạp tốt hơn',
     priority: 2
   },
-  { 
-    id: 'gemini-2.5-flash', 
-    name: 'Gemini 2.5 Flash', 
+  {
+    id: 'gemini-2.5-flash',
+    name: 'Gemini 2.5 Flash',
     desc: 'Model ổn định thế hệ trước',
     priority: 3
   }
@@ -23,24 +23,30 @@ export const MODELS = [
 
 const SYSTEM_INSTRUCTION = `Bạn là một trợ lý biên tập văn bản Tiếng Việt chuyên nghiệp. Nhiệm vụ của bạn là chuẩn hóa văn bản đầu vào theo các quy tắc sau:
 
-1. Sửa lỗi viết hoa:
+1. Sửa lỗi chính tả tiếng Việt:
+   - Tự động phát hiện và sửa các lỗi chính tả phổ biến (ví dụ: sa/xa, s/x, tr/ch, d/gi/r, dấu hỏi/ngã).
+   - Sửa lỗi dấu thanh (đặt sai vị trí dấu).
+   - Sửa lỗi thiếu/thừa ký tự trong từ.
+   - Sửa lỗi sai phụ âm đầu, vần, phụ âm cuối.
+
+2. Sửa lỗi viết hoa:
    - Viết hoa chữ cái đầu câu.
    - Viết thường các từ bị viết hoa sai (ví dụ: "KHông" -> "không", "BÁO CÁO" -> "Báo cáo" trừ khi là tiêu đề).
    - GIỮ NGUYÊN tên riêng, địa danh, tên viết tắt (UBND, THPT, v.v.).
 
-2. Chuẩn hóa Bullet Points:
+3. Chuẩn hóa Bullet Points:
    - Chuyển các ký tự đặc biệt (•, ●, -, +) đầu dòng thành gạch đầu dòng chuẩn "- ".
    - Nếu là ý nhỏ hơn (cấp 2), sử dụng "+ ".
 
-3. Định dạng:
+4. Định dạng:
    - Giữ nguyên cấu trúc đoạn văn.
    - Xóa khoảng trắng thừa.
 
 CHỈ TRẢ VỀ KẾT QUẢ VĂN BẢN ĐÃ SỬA, KHÔNG KÈM LỜI DẪN HAY GIẢI THÍCH.`;
 
 export const fixTextWithAI = async (
-  text: string, 
-  apiKey: string, 
+  text: string,
+  apiKey: string,
   preferredModelId: string = 'gemini-3-flash-preview'
 ): Promise<{ text: string; modelUsed: string }> => {
   if (!apiKey) throw new Error("Chưa có API Key");
@@ -57,7 +63,7 @@ export const fixTextWithAI = async (
     try {
       console.log(`Đang thử model: ${modelId}`);
       const ai = new GoogleGenAI({ apiKey });
-      
+
       const response = await ai.models.generateContent({
         model: modelId,
         contents: text,

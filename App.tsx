@@ -10,7 +10,7 @@ function App() {
   const [correctedText, setCorrectedText] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
-  
+
   // AI & Settings State
   const [apiKey, setApiKey] = useState('');
   const [selectedModel, setSelectedModel] = useState(MODELS[0].id);
@@ -22,11 +22,11 @@ function App() {
   const [docxBuffer, setDocxBuffer] = useState<ArrayBuffer | null>(null);
   const [fileName, setFileName] = useState('');
   const [fileType, setFileType] = useState<'docx' | 'pdf' | null>(null);
-  
+
   // Loading states
   const [isProcessingFile, setIsProcessingFile] = useState(false);
   const [isFixing, setIsFixing] = useState(false);
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Stats
@@ -48,10 +48,10 @@ function App() {
     // Load Settings
     const storedKey = localStorage.getItem('gemini_api_key');
     const storedModel = localStorage.getItem('gemini_model');
-    
+
     if (storedKey) setApiKey(storedKey);
     if (storedModel) setSelectedModel(storedModel);
-    
+
     // Auto open settings if no key
     if (!storedKey) {
       setTimeout(() => setIsSettingsOpen(true), 500);
@@ -64,7 +64,7 @@ function App() {
       setIsSettingsOpen(true);
       return;
     }
-    
+
     setIsFixing(true);
     setErrorMsg(null);
     setLastUsedModel(null);
@@ -134,7 +134,7 @@ function App() {
     try {
       setIsProcessingFile(true);
       setFileName(file.name);
-      
+
       if (isDocx) {
         setFileType('docx');
         const { text, originalBuffer } = await handleDocxUpload(file);
@@ -147,7 +147,7 @@ function App() {
         setOriginalText(text);
       }
       // Note: We don't auto-process with AI immediately to save quota/let user check text first
-      
+
     } catch (error) {
       console.error(error);
       alert('Có lỗi khi đọc file');
@@ -159,7 +159,7 @@ function App() {
   const handleDownload = async () => {
     if (!fileName && !correctedText) return;
     const name = fileName || 'document.docx';
-    
+
     try {
       if (fileType === 'docx' && docxBuffer) {
         // Warning: This DOCX injection is still based on regex logic in services/textProcessor used by docxService
@@ -176,7 +176,7 @@ function App() {
 
   return (
     <>
-      <SettingsModal 
+      <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
         apiKey={apiKey}
@@ -203,15 +203,15 @@ function App() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-             <button
+            <button
               onClick={() => setIsSettingsOpen(true)}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all ${!apiKey ? 'bg-red-50 border-red-200 text-red-600 animate-pulse' : 'bg-white dark:bg-primary-900 border-teal-200 dark:border-primary-700 text-teal-700 dark:text-teal-300'}`}
-             >
-                <span className="material-symbols-outlined text-xl">settings</span>
-                {!apiKey ? <span className="text-sm font-bold">Nhập API Key</span> : <span className="hidden sm:inline text-sm font-medium">Cài đặt</span>}
-             </button>
+            >
+              <span className="material-symbols-outlined text-xl">settings</span>
+              {!apiKey ? <span className="text-sm font-bold">Nhập API Key</span> : <span className="hidden sm:inline text-sm font-medium">Cài đặt</span>}
+            </button>
 
-            <button 
+            <button
               onClick={() => setIsDarkMode(!isDarkMode)}
               className="p-2 rounded-lg text-teal-600 hover:bg-teal-100 dark:text-teal-400 dark:hover:bg-primary-800 transition-colors"
             >
@@ -224,14 +224,14 @@ function App() {
       </header>
 
       <main className="flex-1 flex flex-col pt-24 pb-8 px-4 md:px-6 lg:px-8 max-w-[1600px] mx-auto w-full gap-8">
-        
+
         {/* Hero Section */}
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-2">
           {!apiKey ? (
-             <div 
-               onClick={() => setIsSettingsOpen(true)}
-               className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-red-600 text-xs font-bold border border-red-200 shadow-sm hover:bg-red-100 transition-colors"
-             >
+            <div
+              onClick={() => setIsSettingsOpen(true)}
+              className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-red-600 text-xs font-bold border border-red-200 shadow-sm hover:bg-red-100 transition-colors"
+            >
               <span className="material-symbols-outlined text-base">warning</span>
               Vui lòng nhập API Key để sử dụng App
             </div>
@@ -241,21 +241,21 @@ function App() {
               Powered by Google Gemini
             </div>
           )}
-          
+
           <h2 className="text-4xl md:text-5xl font-extrabold text-teal-950 dark:text-white tracking-tight leading-tight">
-            Biến văn bản của bạn trở nên <br className="hidden md:block"/>
+            Biến văn bản của bạn trở nên <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-teal-800 dark:from-primary-400 dark:to-teal-200">chuyên nghiệp hơn</span>
           </h2>
           {fileName && (
-              <div className="inline-block px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg text-sm font-medium border border-blue-100 dark:border-blue-800 mt-2">
-                  Đang xử lý: {fileName}
-              </div>
+            <div className="inline-block px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg text-sm font-medium border border-blue-100 dark:border-blue-800 mt-2">
+              Đang xử lý: {fileName}
+            </div>
           )}
         </div>
 
         {/* Editor Grid */}
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[500px]">
-          
+
           {/* Input Card */}
           <div className="flex flex-col group h-full">
             <div className="relative flex flex-col h-full bg-white dark:bg-primary-900 rounded-2xl border border-teal-200 dark:border-primary-700 shadow-card hover:shadow-card-hover transition-all duration-300 focus-within:ring-2 focus-within:ring-primary-500/20 focus-within:border-primary-500 overflow-hidden">
@@ -264,9 +264,9 @@ function App() {
                   <span className="material-symbols-outlined text-xl">edit_note</span>
                   <span className="text-sm font-semibold text-teal-800 dark:text-teal-100">Văn bản gốc</span>
                 </div>
-                <button 
+                <button
                   onClick={() => setOriginalText('')}
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-teal-600 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" 
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-teal-600 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                   title="Xóa nội dung"
                 >
                   <span className="material-symbols-outlined text-base">delete</span>
@@ -274,9 +274,9 @@ function App() {
                 </button>
               </div>
               <div className="relative flex-1">
-                <textarea 
-                  className="w-full h-full p-5 bg-transparent border-none resize-none focus:ring-0 text-base leading-7 text-teal-900 dark:text-teal-100 placeholder:text-teal-300 dark:placeholder:text-teal-600" 
-                  id="input-text" 
+                <textarea
+                  className="w-full h-full p-5 bg-transparent border-none resize-none focus:ring-0 text-base leading-7 text-teal-900 dark:text-teal-100 placeholder:text-teal-300 dark:placeholder:text-teal-600"
+                  id="input-text"
                   placeholder="Nhập hoặc dán văn bản cần xử lý vào đây..."
                   value={originalText}
                   onChange={(e) => setOriginalText(e.target.value)}
@@ -292,24 +292,24 @@ function App() {
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <button 
+                  <button
                     onClick={handlePaste}
                     className="text-primary-600 dark:text-primary-400 text-xs font-medium hover:underline flex items-center gap-1"
                   >
                     <span className="material-symbols-outlined text-sm">content_paste</span> Dán
                   </button>
-                  <input 
-                    type="file" 
+                  <input
+                    type="file"
                     ref={fileInputRef}
                     onChange={onFileUpload}
                     accept=".docx, .pdf"
                     className="hidden"
                   />
-                  <button 
+                  <button
                     onClick={() => fileInputRef.current?.click()}
                     className="text-primary-600 dark:text-primary-400 text-xs font-medium hover:underline flex items-center gap-1"
                   >
-                     <span className="material-symbols-outlined text-sm">upload_file</span> {isProcessingFile ? 'Đang đọc...' : 'Tải file'}
+                    <span className="material-symbols-outlined text-sm">upload_file</span> {isProcessingFile ? 'Đang đọc...' : 'Tải file'}
                   </button>
                 </div>
               </div>
@@ -327,42 +327,42 @@ function App() {
                   </span>
                 </div>
                 {lastUsedModel && !errorMsg && (
-                    <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-blue-100 text-blue-700 border border-blue-200">
-                        {MODELS.find(m => m.id === lastUsedModel)?.name || lastUsedModel}
-                    </span>
+                  <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-blue-100 text-blue-700 border border-blue-200">
+                    {MODELS.find(m => m.id === lastUsedModel)?.name || lastUsedModel}
+                  </span>
                 )}
-                <button 
+                <button
                   onClick={handleCopy}
                   disabled={!!errorMsg || !correctedText}
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-teal-600 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition-colors disabled:opacity-50" 
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-teal-600 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition-colors disabled:opacity-50"
                   title="Sao chép kết quả"
                 >
                   <span className="material-symbols-outlined text-base">content_copy</span>
                   Sao chép
                 </button>
               </div>
-              
+
               <div className="relative flex-1 bg-white/40 dark:bg-primary-900/40">
                 {errorMsg ? (
-                    <div className="w-full h-full p-5 text-red-600 font-mono text-sm overflow-auto">
-                        <p className="font-bold mb-2">Lỗi từ API:</p>
-                        {errorMsg}
-                    </div>
+                  <div className="w-full h-full p-5 text-red-600 font-mono text-sm overflow-auto">
+                    <p className="font-bold mb-2">Lỗi từ API:</p>
+                    {errorMsg}
+                  </div>
                 ) : (
-                    <textarea 
-                    className="w-full h-full p-5 bg-transparent border-none resize-none focus:ring-0 text-base leading-7 text-teal-900 dark:text-teal-100 cursor-default placeholder:text-teal-400" 
-                    id="output-text" 
-                    placeholder="Văn bản đã chuẩn hóa sẽ hiển thị tại đây..." 
+                  <textarea
+                    className="w-full h-full p-5 bg-transparent border-none resize-none focus:ring-0 text-base leading-7 text-teal-900 dark:text-teal-100 cursor-default placeholder:text-teal-400"
+                    id="output-text"
+                    placeholder="Văn bản đã chuẩn hóa sẽ hiển thị tại đây..."
                     readOnly
                     value={correctedText}
-                    />
+                  />
                 )}
-                
+
                 {isFixing && (
-                    <div className="absolute inset-0 bg-white/80 dark:bg-primary-950/80 backdrop-blur-sm flex flex-col items-center justify-center gap-3 z-20">
-                        <div className="w-10 h-10 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
-                        <p className="text-sm font-medium text-teal-800 dark:text-teal-200 animate-pulse">Đang xử lý thông minh...</p>
-                    </div>
+                  <div className="absolute inset-0 bg-white/80 dark:bg-primary-950/80 backdrop-blur-sm flex flex-col items-center justify-center gap-3 z-20">
+                    <div className="w-10 h-10 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
+                    <p className="text-sm font-medium text-teal-800 dark:text-teal-200 animate-pulse">Đang xử lý thông minh...</p>
+                  </div>
                 )}
               </div>
 
@@ -376,14 +376,14 @@ function App() {
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                    {correctedText && !errorMsg && (
-                        <button 
-                            onClick={handleDownload}
-                            className="text-emerald-600 dark:text-emerald-400 text-xs font-medium hover:underline flex items-center gap-1"
-                        >
-                            <span className="material-symbols-outlined text-sm">download</span> Tải về .docx
-                        </button>
-                    )}
+                  {correctedText && !errorMsg && (
+                    <button
+                      onClick={handleDownload}
+                      className="text-emerald-600 dark:text-emerald-400 text-xs font-medium hover:underline flex items-center gap-1"
+                    >
+                      <span className="material-symbols-outlined text-sm">download</span> Tải về .docx
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -394,44 +394,44 @@ function App() {
         {/* Floating Action Bar */}
         <div className="sticky bottom-8 z-40 flex justify-center pointer-events-none">
           <div className="pointer-events-auto flex items-center gap-2 p-1.5 bg-white dark:bg-primary-800 rounded-2xl shadow-xl shadow-teal-900/10 dark:shadow-black/30 border border-teal-200 dark:border-primary-600 ring-1 ring-teal-900/5 transition-transform hover:-translate-y-1 duration-300">
-            <button 
+            <button
               onClick={handleClear}
-              className="flex flex-col items-center justify-center w-12 h-12 rounded-xl text-teal-600 hover:text-teal-800 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-primary-700 dark:hover:text-teal-100 transition-colors" 
+              className="flex flex-col items-center justify-center w-12 h-12 rounded-xl text-teal-600 hover:text-teal-800 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-primary-700 dark:hover:text-teal-100 transition-colors"
               title="Xóa tất cả"
             >
               <span className="material-symbols-outlined text-xl">restart_alt</span>
             </button>
             <div className="w-px h-6 bg-teal-200 dark:bg-primary-600 mx-1"></div>
-            <button 
+            <button
               onClick={handleSwap}
               disabled={!!errorMsg}
-              className="flex flex-col items-center justify-center w-12 h-12 rounded-xl text-teal-600 hover:text-teal-800 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-primary-700 dark:hover:text-teal-100 transition-colors disabled:opacity-50" 
+              className="flex flex-col items-center justify-center w-12 h-12 rounded-xl text-teal-600 hover:text-teal-800 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-primary-700 dark:hover:text-teal-100 transition-colors disabled:opacity-50"
               title="Hoán đổi"
             >
               <span className="material-symbols-outlined text-xl rotate-90 sm:rotate-0">swap_horiz</span>
             </button>
-            <button 
+            <button
               onClick={handleProcess}
               disabled={isFixing || !originalText}
               className={`group relative flex items-center gap-2 px-6 h-12 bg-teal-900 dark:bg-primary-600 hover:bg-teal-800 dark:hover:bg-primary-500 text-white rounded-xl font-bold shadow-lg shadow-teal-900/20 dark:shadow-primary-600/30 transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed`}
             >
               {isFixing ? (
-                  <span className="material-symbols-outlined animate-spin">refresh</span>
+                <span className="material-symbols-outlined animate-spin">refresh</span>
               ) : (
-                  <span className="material-symbols-outlined group-hover:animate-pulse">auto_fix_high</span>
+                <span className="material-symbols-outlined group-hover:animate-pulse">auto_fix_high</span>
               )}
               <span>{isFixing ? 'Đang xử lý...' : 'Sửa lỗi ngay'}</span>
               {!isFixing && originalText && (
                 <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
                 </span>
               )}
             </button>
-            <button 
+            <button
               onClick={handleCopy}
               disabled={!correctedText || !!errorMsg}
-              className="flex flex-col items-center justify-center w-12 h-12 rounded-xl text-teal-600 hover:text-teal-800 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-primary-700 dark:hover:text-teal-100 transition-colors disabled:opacity-50" 
+              className="flex flex-col items-center justify-center w-12 h-12 rounded-xl text-teal-600 hover:text-teal-800 hover:bg-teal-50 dark:text-teal-300 dark:hover:bg-primary-700 dark:hover:text-teal-100 transition-colors disabled:opacity-50"
               title="Sao chép"
             >
               <span className="material-symbols-outlined text-xl">content_copy</span>
@@ -452,25 +452,25 @@ function App() {
             <p className="text-teal-600 dark:text-teal-400 text-sm leading-relaxed">Sử dụng Google Gemini (3.0 & 2.5) để phân tích ngữ cảnh và sửa lỗi chính xác hơn quy tắc thông thường.</p>
           </div>
           <div className="group p-6 rounded-2xl bg-teal-50 dark:bg-primary-800/50 hover:bg-white dark:hover:bg-primary-800 border border-transparent hover:border-teal-200 dark:hover:border-primary-600 hover:shadow-xl hover:shadow-teal-200/20 dark:hover:shadow-none transition-all duration-300">
-             <div className="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 mb-4 group-hover:scale-110 transition-transform duration-300">
+            <div className="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 mb-4 group-hover:scale-110 transition-transform duration-300">
               <span className="material-symbols-outlined text-2xl">bolt</span>
             </div>
             <h3 className="font-bold text-lg text-teal-950 dark:text-teal-100 mb-2">Cơ chế Fallback</h3>
             <p className="text-teal-600 dark:text-teal-400 text-sm leading-relaxed">Tự động chuyển đổi giữa các model (Flash/Pro) nếu gặp sự cố quá tải, đảm bảo quá trình xử lý liên tục.</p>
           </div>
           <div className="group p-6 rounded-2xl bg-teal-50 dark:bg-primary-800/50 hover:bg-white dark:hover:bg-primary-800 border border-transparent hover:border-teal-200 dark:hover:border-primary-600 hover:shadow-xl hover:shadow-teal-200/20 dark:hover:shadow-none transition-all duration-300">
-             <div className="w-12 h-12 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 mb-4 group-hover:scale-110 transition-transform duration-300">
+            <div className="w-12 h-12 rounded-xl bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 mb-4 group-hover:scale-110 transition-transform duration-300">
               <span className="material-symbols-outlined text-2xl">format_list_bulleted</span>
             </div>
-            <h3 className="font-bold text-lg text-teal-950 dark:text-teal-100 mb-2">Chuẩn hóa Format</h3>
-            <p className="text-teal-600 dark:text-teal-400 text-sm leading-relaxed">Xử lý thông minh các gạch đầu dòng, dấu câu và viết hoa tiêu đề dựa trên hiểu biết ngữ nghĩa.</p>
+            <h3 className="font-bold text-lg text-teal-950 dark:text-teal-100 mb-2">Sửa lỗi chính tả & Format</h3>
+            <p className="text-teal-600 dark:text-teal-400 text-sm leading-relaxed">Tự động phát hiện và sửa các lỗi chính tả, dấu câu, và chuẩn hóa định dạng văn bản chuyên nghiệp.</p>
           </div>
         </div>
       </section>
-      
+
       {/* Footer */}
       <footer className="py-8 text-center text-teal-600 dark:text-teal-400/60 text-sm font-medium border-t border-teal-100 dark:border-primary-800/50 bg-white/50 dark:bg-primary-950/50">
-         <p>Phát triển bởi thầy <span className="text-primary-600 dark:text-primary-400 font-bold">Trần Hoài Thanh</span></p>
+        <p>Phát triển bởi thầy <span className="text-primary-600 dark:text-primary-400 font-bold">Trần Hoài Thanh</span></p>
       </footer>
 
       {/* Toast */}
